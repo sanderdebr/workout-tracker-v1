@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -20,7 +20,7 @@ import Copyright from '../components/Copyright';
 function SignUp(props) {
   const classes = useStyles();
 
-  const initialUser = {id: null, name: '', email: '', password: '', error: null}
+  const initialUser = {id: null, name: '', email: '', password: '', error: null, auth: null}
 
   const [user, setUser] = useState(initialUser);
 
@@ -30,7 +30,14 @@ function SignUp(props) {
   }
 
   const handleSubmit = e => {
-    props.firebase.doCreateUserWithEmailAndPassword(user.email, user.password);
+    props.firebase.auth.createUserWithEmailAndPassword(user.email, user.password)
+    .then(authUser => {
+      setUser(initialUser);
+      props.history.push("/dashboard");
+    })
+    .catch(error => {
+      setUser({...user, error: error.message})
+    });
   }
 
   const isValid = user.name === '' || user.email === '' || user.password === '';
@@ -123,4 +130,4 @@ function SignUp(props) {
   );
 }
 
-export default SignUp;
+export default withRouter(SignUp);

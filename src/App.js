@@ -13,6 +13,7 @@ import theme from './config/theme-config';
 
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -20,13 +21,16 @@ function App() {
       <FirebaseContext.Provider value={new Firebase()}>
         <ThemeProvider theme={theme}>
           <Switch>
+            <Route exact path="/">
+              <SignIn />
+            </Route>
             <Route path="/sign-up">
               <FirebaseContext.Consumer>
                 {firebase => <SignUp firebase={firebase} />}
               </FirebaseContext.Consumer>
             </Route>
-            <Route exact path="/">
-              <SignIn />
+            <Route path="/dashboard">
+              <Dashboard />
             </Route>
           </Switch>
         </ThemeProvider>
