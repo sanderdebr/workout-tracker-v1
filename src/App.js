@@ -21,7 +21,9 @@ function App() {
         <ThemeProvider theme={theme}>
           <Switch>
             <Route path="/sign-up">
-              <SignUp />
+              <FirebaseContext.Consumer>
+                {firebase => <SignUp firebase={firebase} />}
+              </FirebaseContext.Consumer>
             </Route>
             <Route exact path="/">
               <SignIn />

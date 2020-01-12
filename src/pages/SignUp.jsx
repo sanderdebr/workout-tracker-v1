@@ -17,7 +17,7 @@ import appConfig from '../config/app-config';
 import useStyles from '../config/theme-signinup';
 import Copyright from '../components/Copyright';
 
-function SignUp() {
+function SignUp(props) {
   const classes = useStyles();
 
   const initialUser = {id: null, name: '', email: '', password: '', error: null}
@@ -30,7 +30,7 @@ function SignUp() {
   }
 
   const handleSubmit = e => {
-    alert();
+    props.firebase.doCreateUserWithEmailAndPassword(user.email, user.password);
   }
 
   const isValid = user.name === '' || user.email === '' || user.password === '';
