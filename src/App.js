@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -6,7 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import Firebase, { FirebaseContext, withFirebase } from './components/Firebase';
+import { withFirebase } from './components/Firebase';
 
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './config/theme-config';
@@ -14,34 +14,27 @@ import theme from './config/theme-config';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
+import { withAuthentication } from './components/Session';
 
-function App() {
-
-  const [state, setState] = React.useState({authUser: null});
-
-  const setStateUser = user => {
-    setState({ authUser: user });
-  }
+function App(props) {
 
   return (
     <Router>
-      <FirebaseContext.Provider value={new Firebase()}>
-        <ThemeProvider theme={theme}>
-          <Switch>
-            <Route exact path="/">
-              <SignIn setStateUser={setStateUser} /> 
-            </Route>
-            <Route path="/sign-up">
-                <SignUp />
-            </Route>
-            <Route path="/dashboard">
-                <Dashboard />
-            </Route> 
-          </Switch>
-        </ThemeProvider>
-      </FirebaseContext.Provider>
+          <ThemeProvider theme={theme}>
+            <Switch>
+              <Route exact path="/">
+                <SignIn />
+              </Route>
+              <Route path="/sign-up">
+                  <SignUp />
+              </Route>
+              <Route path="/dashboard">
+                  <Dashboard />
+              </Route> 
+            </Switch>
+          </ThemeProvider>
     </Router>
   );
 }
 
-export default withFirebase(App);
+export default withAuthentication(App);

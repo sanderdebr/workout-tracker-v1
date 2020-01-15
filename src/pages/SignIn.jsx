@@ -30,10 +30,8 @@ function SignIn(props) {
     setUser({...user, [name]: value})
   }
 
-  // props.setStateUser({authUser: 'sander'});
-
-  const handleSubmit = e => {
-    props.firebase.auth.signInWithEmailAndPassword(user.email, user.password)
+  const handleSubmit = () => {
+    props.firebase.doSignInWithEmailAndPassword(user.email, user.password)
     .then(authUser => {
       setUser({initialUser})
       props.history.push("/dashboard");
