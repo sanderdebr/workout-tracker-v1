@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withFirebase } from '../components/Firebase';
 import { Link, withRouter } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -98,7 +99,9 @@ function SignUp(props) {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <Typography className={classes.error}>{user.error ? user.error : ''}</Typography>
+            <Typography className={classes.error}>
+              {user.error ? user.error : ''}
+            </Typography>
             <Button
               type="submit"
               fullWidth
@@ -130,4 +133,4 @@ function SignUp(props) {
   );
 }
 
-export default withRouter(SignUp);
+export default withRouter(withFirebase(SignUp));

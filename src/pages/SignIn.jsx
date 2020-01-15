@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { withFirebase } from '../components/Firebase';
+import { Link, withRouter } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -17,8 +18,32 @@ import appConfig from '../config/app-config';
 import useStyles from '../config/theme-signinup';
 import Copyright from '../components/Copyright';
 
-function SignIn() {
+function SignIn(props) {
   const classes = useStyles();
+
+  const initialUser = {id: null, email: '', password: '', error: null, auth: null}
+
+  const [user, setUser] = useState(initialUser);
+
+  const handleChange = e => {
+    const {name, value} = e.target;
+    setUser({...user, [name]: value})
+  }
+
+  // props.setStateUser({authUser: 'sander'});
+
+  const handleSubmit = e => {
+    props.firebase.auth.signInWithEmailAndPassword(user.email, user.password)
+    .then(authUser => {
+      setUser({initialUser})
+      props.history.push("/dashboard");
+    })
+    .catch(error => {
+      setUser({...user, error: error.message})
+    });
+  }
+
+  const isValid = user.email === '' || user.password === '';
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -35,7 +60,7 @@ function SignIn() {
           <Typography variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} noValidate onSubmit={e => e.preventDefault()}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -46,6 +71,7 @@ function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={handleChange}
             />
             <TextField
               variant="outlined"
@@ -57,17 +83,23 @@ function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handleChange}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            <Typography className={classes.error}>
+              {user.error ? user.error : ''}
+            </Typography>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={handleSubmit}
+              disabled={isValid}
             >
               Sign In
             </Button>
@@ -93,4 +125,4 @@ function SignIn() {
   );
 };
 
-export default SignIn;
+export default withRouter(withFirebase(SignIn));
