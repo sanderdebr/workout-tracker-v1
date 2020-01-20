@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -17,6 +18,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import useStyles from '../../config/theme-dashboard';
 
 function Sidebar(props) {
+    let match = useRouteMatch();
+
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(true);
@@ -42,25 +45,28 @@ function Sidebar(props) {
             </div>
             <Divider />
             <List>
-                <div>
+                <ListSubheader inset>Menu</ListSubheader>
+                <Link to={`${match.url}/calendar`}>
                     <ListItem button>
                         <ListItemIcon>
                             <EventNoteIcon />
                         </ListItemIcon>
                         <ListItemText primary="Calendar" />
                     </ListItem>
-                </div>
+                </Link>
             </List>
             <Divider />
             <List>
                 <div>
                     <ListSubheader inset>Account</ListSubheader>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <SettingsIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Settings" />
+                    <Link to={`${match.url}/settings`}>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <SettingsIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Settings" />
                         </ListItem>
+                    </Link>
                     <ListItem button onClick={() => props.signOut()}>
                         <ListItemIcon>
                             <ExitToAppIcon />

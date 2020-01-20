@@ -1,12 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
-
-import { withFirebase } from './components/Firebase';
 
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './config/theme-config';
