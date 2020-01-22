@@ -23,7 +23,7 @@ import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
-import Calendar from './Calendar';
+import Workouts from './Workouts';
 import Settings from './Settings';
 import Sidebar from '../components/Sidebar';
 import useStyles from '../config/theme-dashboard';
@@ -40,7 +40,6 @@ function Dashboard(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const signOut = () => {
     props.firebase.auth.signOut()
@@ -80,17 +79,17 @@ function Dashboard(props) {
               <Sidebar signOut={signOut} />
               <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
+                <Container maxWidth="xl" className={classes.container}>
                   <Grid container spacing={3}>
                     {/* Chart */}
                     <Grid item xs={12} md={8} lg={9}>
-                      <Paper className={fixedHeightPaper}>
+                      <Paper className={classes.paper}>
                             <Switch>
                               <Route exact path={`${match.url}/`}>
-                                <Calendar />
+                                <Workouts />
                               </Route> 
-                              <Route path={`${match.url}/calendar`}>
-                                <Calendar />
+                              <Route path={`${match.url}/workouts`}>
+                                <Workouts />
                               </Route>
                               <Route path={`${match.url}/settings`}>
                                 <Settings />
@@ -100,7 +99,7 @@ function Dashboard(props) {
                     </Grid>
                     {/* Recent Deposits */}
                     <Grid item xs={12} md={4} lg={3}>
-                      <Paper className={fixedHeightPaper}>
+                      <Paper className={classes.paper}>
 
                       </Paper>
                     </Grid>

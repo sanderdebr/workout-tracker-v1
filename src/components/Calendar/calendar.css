@@ -1,0 +1,17 @@
+.calendar th,
+.calendar td {
+    padding: 1em 2em;
+}
+
+.calendar th {
+    background: #efefef;
+}
+
+.calendar td {
+    text-align: center;
+}
+
+.calendar .today {
+    font-weight: bold;
+    background: #efefef;
+}

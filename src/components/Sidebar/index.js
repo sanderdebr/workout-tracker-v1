@@ -46,12 +46,12 @@ function Sidebar(props) {
             <Divider />
             <List>
                 <ListSubheader inset>Menu</ListSubheader>
-                <Link to={`${match.url}/calendar`}>
+                <Link to={`${match.url}/workouts`}>
                     <ListItem button>
                         <ListItemIcon>
                             <EventNoteIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Calendar" />
+                        <ListItemText primary="Workouts" />
                     </ListItem>
                 </Link>
             </List>
