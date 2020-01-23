@@ -15,3 +15,15 @@
     font-weight: bold;
     background: #efefef;
 }
+
+.month-selector th {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-transform: capitalize;
+}
+
+.month-cell:hover {
+    background: #efefef;
+    cursor: pointer;
+}

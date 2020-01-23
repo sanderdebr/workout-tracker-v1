@@ -100,13 +100,13 @@ function Dashboard(props) {
                     {/* Recent Deposits */}
                     <Grid item xs={12} md={4} lg={3}>
                       <Paper className={classes.paper}>
-
+                        <h2>Add activity</h2>
                       </Paper>
                     </Grid>
                     {/* Recent Orders */}
                     <Grid item xs={12}>
                       <Paper className={classes.paper}>
-
+                        <h2>Activities</h2>
                       </Paper>
                     </Grid>
                   </Grid>
