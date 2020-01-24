@@ -20,10 +20,22 @@ const CalendarBody = props => {
 
     let daysInMonth = [];
     for (let d = 1; d <= props.daysInMonth(); d++) {
-        let currentDay;
-        if (props.currentDay() == d) currentDay = "today";
+        let currentDay = "", selectedDay= "";
+        if (props.currentDay() == d &&
+            props.currentMonth() == props.actualMonth()) {
+            currentDay = "today";
+        }
+        if (props.selectedDay.day == d &&
+            props.currentMonthNum() == props.selectedDay.month ) {
+            selectedDay = "selected-day";
+        }
+
         daysInMonth.push(
-            <TableCell key={d} className={currentDay}>{d}</TableCell>
+            <TableCell 
+                key={d} 
+                className={"week-day" + " " + currentDay + " " + selectedDay}
+                onClick={() => props.setSelectedDay(d)}
+            >{d}</TableCell>
         );
     }
 
@@ -51,7 +63,7 @@ const CalendarBody = props => {
                     <TableRow>
                         {
                             props.weekdays.map(day => (
-                                <TableCell key={day} className="week-day">
+                                <TableCell key={day}>
                                     {day}
                                 </TableCell>
                             ))
@@ -60,7 +72,12 @@ const CalendarBody = props => {
                 </TableHead>
                 <TableBody>
                     {
-                        rows.map((day, i) => <TableRow key={i}>{day}</TableRow>)
+                        rows.map((day, i) => 
+                            <TableRow 
+                                key={i}
+                            >
+                                {day}
+                            </TableRow>)
                     }
                 </TableBody>
             </Table>

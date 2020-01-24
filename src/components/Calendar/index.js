@@ -1,5 +1,5 @@
 import React from 'react';
-import * as moment from 'moment';
+import moment from 'moment';
 import './calendar.css';
 import 'moment/locale/en-gb';
 import 'moment/locale/nl';
@@ -14,6 +14,11 @@ class Calendar extends React.Component {
         this.state = {
             dateObject: moment(),
             allMonths: moment.months(),
+            showMonthTable: false,
+            selectedDay: {
+                day: 22,
+                month: 1
+            },
             months: [],
             locale: 'nl',
         }
@@ -28,6 +33,9 @@ class Calendar extends React.Component {
     daysInMonth = () => this.state.dateObject.daysInMonth();
     currentDay = () => this.state.dateObject.format("D");
     currentMonth = () => this.state.dateObject.format("MMMM");
+    currentMonthNum = () => this.state.dateObject.month();
+    actualMonth = () => moment().format("MMMM");
+    currentYear = () => this.state.dateObject.format("YYYY")
 
     setMonth = month => {
         let monthNo = this.state.allMonths.indexOf(month);
@@ -37,8 +45,22 @@ class Calendar extends React.Component {
             dateObject,
             months: []
         })
+        this.toggleMonthSelect();
     }
-   
+
+    toggleMonthSelect = () => {
+        this.setState({ showMonthTable: !this.state.showMonthTable })
+    }
+
+    setSelectedDay = (day) => {
+        this.setState({
+            selectedDay: {
+                day,
+                month: this.currentMonthNum()
+            }
+        });
+    }
+
     render() {
 
         return (
@@ -46,13 +68,21 @@ class Calendar extends React.Component {
                 <CalendarHead
                     allMonths={this.state.allMonths}
                     currentMonth={this.currentMonth}
+                    currentYear={this.currentYear}
                     setMonth={this.setMonth}
                     months={this.state.months}
+                    showMonthTable={this.state.showMonthTable}
+                    toggleMonthSelect={this.toggleMonthSelect}
                 />
                 <CalendarBody 
                     firstDayOfMonth={this.firstDayOfMonth}
                     daysInMonth={this.daysInMonth}
                     currentDay={this.currentDay}
+                    currentMonth={this.currentMonth}
+                    currentMonthNum={this.currentMonthNum}
+                    actualMonth={this.actualMonth}
+                    setSelectedDay={this.setSelectedDay}
+                    selectedDay={this.state.selectedDay}
                     weekdays={moment.weekdays()} 
                 />
             </>

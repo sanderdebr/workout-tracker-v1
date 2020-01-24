@@ -13,7 +13,7 @@
 
 .calendar .today {
     font-weight: bold;
-    background: #efefef;
+    border: 5px solid #efefef;
 }
 
 .month-selector th {
@@ -26,4 +26,27 @@
 .month-cell:hover {
     background: #efefef;
     cursor: pointer;
+}
+
+.select-month-title {
+    font-weight: bold;
+    background: #efefef;
+}
+
+.toggle-month {
+    text-align: center !important;
+}
+
+.toggle-month:hover,
+.week-day:hover {
+    cursor: pointer;
+    background: #efefef;
+}
+
+.arrow-icon {
+    padding: 5px 0 0 5px;
+}
+
+.calendar .selected-day {
+    background: lawngreen;
 }

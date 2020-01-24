@@ -1,6 +1,5 @@
 import React from 'react';
 import './calendar.css';
-import * as moment from 'moment';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,21 +8,25 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const CalendarHead = props => {
 
-    props.allMonths.map(month => {
-        props.months.push(
-            <TableCell 
-                className="month-cell" 
-                style={{textAlign: "center"}}
-                key={month}
-                onClick={e => props.setMonth(month)}
-            >
-                <span>{month}</span>
-            </TableCell>
-        )
-    });
+    if (props.months.length === 0) {
+        props.allMonths.map(month => {
+            props.months.push(
+                <TableCell 
+                    colSpan="2"
+                    className="month-cell" 
+                    style={{textAlign: "center"}}
+                    key={month}
+                    onClick={e => props.setMonth(month)}
+                >
+                    <span>{month}</span>
+                </TableCell>
+            )
+        });
+    } 
 
     let rows = [];
     let cells = [];
@@ -46,15 +49,33 @@ const CalendarHead = props => {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell colSpan="4">{props.currentMonth()}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan="4">Select a month</TableCell>
+                        <TableCell
+                            className="toggle-month" 
+                            colSpan="4"
+                            onClick={() => props.toggleMonthSelect()}
+                        >
+                            {props.currentMonth()}
+                            <ArrowDropDownIcon
+                                className="arrow-icon"
+                            />
+                        </TableCell>
+                        <TableCell colSpan="4">
+                            {props.currentYear()}
+                        </TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
-                        {monthList}
-                </TableBody>
+                {props.showMonthTable ?
+                    <TableBody>
+                        <TableRow>
+                            <TableCell 
+                                colSpan="5"
+                                style={{textAlign:"center"}}
+                                className="select-month-title"
+                                >Select a month</TableCell>
+                        </TableRow> 
+                        { monthList }
+                    </TableBody>
+                : '' }
             </Table>
         </TableContainer>
     )
