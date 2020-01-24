@@ -50,3 +50,10 @@
 .calendar .selected-day {
     background: lawngreen;
 }
+
+.paper {
+    padding: .25em 1.5em 1.5em 1.5em;
+    display: 'flex';
+    overflow: 'auto';
+    flex-direction: 'column'
+}

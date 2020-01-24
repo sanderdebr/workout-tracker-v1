@@ -22,24 +22,16 @@ function Sidebar(props) {
 
     const classes = useStyles();
 
-    const [open, setOpen] = React.useState(true);
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
-
     return (
         <Drawer
             variant="permanent"
             classes={{
-                paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                paper: clsx(classes.drawerPaper, !props.open && classes.drawerPaperClose),
             }}
-            open={open}
+            open={props.open}
             >
             <div className={classes.toolbarIcon}>
-                <IconButton onClick={handleDrawerClose}>
+                <IconButton onClick={props.handleDrawerClose}>
                 <ChevronLeftIcon />
                 </IconButton>
             </div>

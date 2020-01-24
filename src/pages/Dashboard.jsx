@@ -18,15 +18,13 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import Workouts from './Workouts';
 import Settings from './Settings';
-import Sidebar from '../components/Sidebar';
 import useStyles from '../config/theme-dashboard';
+import Sidebar from '../components/Sidebar';
 import Copyright from '../components/Copyright';
 
 function Dashboard(props) {
@@ -76,45 +74,31 @@ function Dashboard(props) {
                   </IconButton>
                 </Toolbar>
               </AppBar>
-              <Sidebar signOut={signOut} />
-              <main className={classes.content}>
+
+              <Sidebar signOut={signOut} open={open} handleDrawerClose={handleDrawerClose} />
+
+              <main className={classes.content && classes.appBarShift}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="xl" className={classes.container}>
-                  <Grid container spacing={3}>
-                    {/* Chart */}
-                    <Grid item xs={12} md={8} lg={9}>
-                      <Paper className={classes.paper}>
-                            <Switch>
-                              <Route exact path={`${match.url}/`}>
-                                <Workouts />
-                              </Route> 
-                              <Route path={`${match.url}/workouts`}>
-                                <Workouts />
-                              </Route>
-                              <Route path={`${match.url}/settings`}>
-                                <Settings />
-                              </Route>
-                            </Switch>
-                      </Paper>
-                    </Grid>
-                    {/* Recent Deposits */}
-                    <Grid item xs={12} md={4} lg={3}>
-                      <Paper className={classes.paper}>
-                        <h2>Add activity</h2>
-                      </Paper>
-                    </Grid>
-                    {/* Recent Orders */}
-                    <Grid item xs={12}>
-                      <Paper className={classes.paper}>
-                        <h2>Activities</h2>
-                      </Paper>
-                    </Grid>
-                  </Grid>
+                <Container maxWidth="xl" root className={classes.container}>
+
+                    <Switch>
+                      <Route exact path={`${match.url}/`}>
+                        <Workouts authUser={authUser} />
+                      </Route> 
+                      <Route path={`${match.url}/workouts`}>
+                        <Workouts />
+                      </Route>
+                      <Route path={`${match.url}/settings`}>
+                        <Settings />
+                      </Route>
+                    </Switch>
+                    
                   <Box pt={4}>
                     <Copyright />
                   </Box>
                 </Container>
               </main>
+              
             </div>
          ) : (
             <p>Not authorized.</p>
