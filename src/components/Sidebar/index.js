@@ -38,7 +38,7 @@ function Sidebar(props) {
             <Divider />
             <List>
                 <ListSubheader inset>Menu</ListSubheader>
-                <Link to={`${match.url}/workouts`}>
+                <Link to={`${match.url}`}>
                     <ListItem button>
                         <ListItemIcon>
                             <EventNoteIcon />
@@ -57,6 +57,14 @@ function Sidebar(props) {
                                 <SettingsIcon />
                             </ListItemIcon>
                             <ListItemText primary="Settings" />
+                        </ListItem>
+                    </Link>
+                    <Link to={`${match.url}/admin`}>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <SettingsIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Admin" />
                         </ListItem>
                     </Link>
                     <ListItem button onClick={() => props.signOut()}>

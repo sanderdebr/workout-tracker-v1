@@ -21,8 +21,9 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
-import Workouts from './Workouts';
+import Calendar from '../components/Calendar';
 import Settings from './Settings';
+import AdminPage from './AdminPage';
 import useStyles from '../config/theme-dashboard';
 import Sidebar from '../components/Sidebar';
 import Copyright from '../components/Copyright';
@@ -83,13 +84,13 @@ function Dashboard(props) {
 
                     <Switch>
                       <Route exact path={`${match.url}/`}>
-                        <Workouts authUser={authUser} />
+                        <Calendar authUser={authUser} />
                       </Route> 
-                      <Route path={`${match.url}/workouts`}>
-                        <Workouts />
-                      </Route>
                       <Route path={`${match.url}/settings`}>
                         <Settings />
+                      </Route>
+                      <Route path={`${match.url}/admin`}>
+                        <AdminPage />
                       </Route>
                     </Switch>
                     

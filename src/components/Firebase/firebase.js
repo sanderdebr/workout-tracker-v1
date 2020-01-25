@@ -33,6 +33,9 @@ class Firebase {
     user = uid => this.db.ref(`users/${uid}`);
     users = () => this.db.ref('users');
 
+    /*** ACTIVITY API ***/
+    activity = (uid, activity) => this.db.ref().child(`users/${uid}`).update({ activity });
+
 }
 
 export default Firebase;

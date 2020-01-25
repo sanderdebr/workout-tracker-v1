@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { withAuthentication } from '../Session';
+import { withFirebase } from '../Firebase';
+
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -8,8 +11,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
-
-import insertDatabase from './insertDatabase';
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function AddActivity(props) {
+
     const classes = useStyles();
 
     const defaultActivity = {
@@ -43,8 +45,11 @@ function AddActivity(props) {
 
     const isValid = activity.name === '';
 
+    console.log(props.authUser.uid);
+
     const handleSubmit = () => {
-        insertDatabase(activity);
+        return props.firebase
+            .activity(props.authUser.uid, activity)
     }
 
     return (
@@ -105,6 +110,6 @@ function AddActivity(props) {
             </Button>
         </form>
     )
-}
+};
 
-export default AddActivity;
+export default withAuthentication(withFirebase(AddActivity));
