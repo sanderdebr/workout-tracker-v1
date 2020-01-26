@@ -21,16 +21,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function AddActivity(props) {
-
-    const {authUser, firebase, selectedDay} = props;
-
-    const uid = authUser.uid;
-
     const classes = useStyles();
 
+    const {authUser, firebase, selectedDay} = props;
+    const uid = authUser.uid;
+
+    // Set query date for updating database
     selectedDay.year = new Date().getFullYear();
     let queryDate = `${selectedDay.day}-${selectedDay.month}-${selectedDay.year}`;
 
+    // Set default activity object
     const defaultActivity = {
         name: '',
         type: 1,
@@ -55,6 +55,7 @@ function AddActivity(props) {
 
     const isValid = activity.name === '';
 
+    // Add the activity to firebase via the API made in this app
     const handleSubmit = action => {
 
         if (authUser) {

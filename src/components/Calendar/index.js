@@ -52,6 +52,7 @@ function Calendar(props) {
         return firstDay;
     }
 
+    // Update the clicked day
     const setSelectedDay = (day) => {
         setSelected({
                 day,
@@ -63,10 +64,12 @@ function Calendar(props) {
     const [loading, setLoading] = useState(true);
     const [activities, setActivities] = useState([]);
 
+    // Retrieve firebase data every time selectedDay changes
     useEffect(() => {
         retrieveData();
     }, [selectedDay])
 
+    // Retrieve data from firebase
     const retrieveData = () => {
         const {firebase, authUser} = props;
         

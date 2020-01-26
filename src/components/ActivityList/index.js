@@ -13,9 +13,6 @@ import Paper from '@material-ui/core/Paper';
 function ActivityList(props) {
     const {loading, activities} = props;
 
-    // 2. Only show activities of selected day
-    // 3. Update activity list when changing selected day
-
     return (
         <>
             { 
