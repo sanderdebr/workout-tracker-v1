@@ -29,19 +29,23 @@ function AddActivity(props) {
     const classes = useStyles();
 
     selectedDay.year = new Date().getFullYear();
+    let queryDate = `${selectedDay.day}-${selectedDay.month}-${selectedDay.year}`;
 
     const defaultActivity = {
         name: '',
         type: 1,
         duration: 60,
-        date: selectedDay
+        date: queryDate
     }
 
     const [activity, setActivity] = useState(defaultActivity);
 
     const handleChange = e => {
         const { name, value } = e.target
-        setActivity({...activity, [name]: value});
+        setActivity({
+            ...activity, 
+            date: queryDate,
+            [name]: value});
     }
 
     const handleSlider = e => {

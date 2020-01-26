@@ -38,7 +38,8 @@ function SignUp(props) {
         .user(authUser.user.uid)
         .set({
           username: user.name,
-          email: user.email
+          email: user.email,
+          activities: 'not set'
         });
     })
     .then(authUser => {

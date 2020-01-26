@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { withFirebase } from '../Firebase';
 import moment from 'moment';
 import './calendar.css';
 import 'moment/locale/en-gb';
@@ -55,7 +56,28 @@ function Calendar(props) {
         setSelected({
                 day,
                 month: currentMonthNum()
-        })
+        });
+        retrieveData();
+    };
+
+    const [loading, setLoading] = useState(true);
+    const [activities, setActivities] = useState([]);
+
+    useEffect(() => {
+        retrieveData();
+    }, [selectedDay])
+
+    const retrieveData = () => {
+        const {firebase, authUser} = props;
+        
+        let queryDate = `${selectedDay.day}-${selectedDay.month}-${selectedDay.year}`;
+
+        let ref = firebase.db.ref().child(`users/${authUser.uid}/activities`);
+        const listener = ref.orderByChild("date").equalTo(queryDate).on("value", snapshot => {
+            let data = snapshot.val();
+            setActivities(data);
+            setLoading(false);
+        });
     }
 
     return (
@@ -97,7 +119,8 @@ function Calendar(props) {
                 <Paper className="paper">
                 <h2>Activities for {selectedDay.day}-{selectedDay.month + 1}</h2>
                 <ActivityList
-                    authUser={props.authUser}
+                    loading={loading}
+                    activities={activities}
                 />
                 </Paper>
             </Grid>
@@ -106,4 +129,4 @@ function Calendar(props) {
     )
 };
 
-export default Calendar;
+export default withFirebase(Calendar);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { withFirebase } from '../Firebase';
 
 import loader from './loader.gif';
 
@@ -12,26 +11,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 function ActivityList(props) {
-    const {firebase, authUser} = props;
+    const {loading, activities} = props;
 
-    const [noResults, setNoResults] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [activities, setActivities] = useState([]);
-
-    useEffect(() => {
-        let ref = firebase.db.ref().child(`users/${authUser.uid}/activities`);
-        const listener = ref.on("value", snapshot => {
-            const data = snapshot.val();
-            if (data) {
-                const dataArray = Object.values(data);
-                setActivities(dataArray);
-            } else {
-                setNoResults(true);
-            }
-            setLoading(false);
-        });
-        return () => ref.off('value', listener);
-    }, [firebase.db]);
+    // 2. Only show activities of selected day
+    // 3. Update activity list when changing selected day
 
     return (
         <>
@@ -42,7 +25,7 @@ function ActivityList(props) {
             }
             
             {
-                noResults === true 
+                activities === 'not set' || activities === null
                     ? <p>No activities added yet.</p>
                     :
                     <TableContainer component={Paper} >
@@ -55,15 +38,17 @@ function ActivityList(props) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                            {activities.map(activity => {
-                                        return (
-                                            <TableRow>
-                                                <TableCell>{activity.name}</TableCell>
-                                                <TableCell>{activity.type}</TableCell>
-                                                <TableCell>{activity.duration}</TableCell>
-                                            </TableRow>
-                                        )
-                            })}
+                            {
+                                Object.values(activities).map(activity => {
+                                    return (
+                                        <TableRow>
+                                            <TableCell>{activity.name}</TableCell>
+                                            <TableCell>{activity.type}</TableCell>
+                                            <TableCell>{activity.duration}</TableCell>
+                                        </TableRow>
+                                    )
+                                })
+                            }
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -72,4 +57,4 @@ function ActivityList(props) {
     )
 };
 
-export default withFirebase(ActivityList);
+export default ActivityList;
