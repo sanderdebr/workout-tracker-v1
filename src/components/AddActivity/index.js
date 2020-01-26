@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { withAuthentication } from '../Session';
 import { withFirebase } from '../Firebase';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,12 +22,19 @@ const useStyles = makeStyles(theme => ({
 
 function AddActivity(props) {
 
+    const {authUser, firebase, selectedDay} = props;
+
+    const uid = authUser.uid;
+
     const classes = useStyles();
+
+    selectedDay.year = new Date().getFullYear();
 
     const defaultActivity = {
         name: '',
         type: 1,
-        duration: 60
+        duration: 60,
+        date: selectedDay
     }
 
     const [activity, setActivity] = useState(defaultActivity);
@@ -45,11 +51,11 @@ function AddActivity(props) {
 
     const isValid = activity.name === '';
 
-    console.log(props.authUser.uid);
+    const handleSubmit = action => {
 
-    const handleSubmit = () => {
-        return props.firebase
-            .activity(props.authUser.uid, activity)
+        if (authUser) {
+            firebase.activity(uid, activity, action)
+        }
     }
 
     return (
@@ -103,7 +109,7 @@ function AddActivity(props) {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={handleSubmit}
+                onClick={() => handleSubmit('update')}
                 disabled={isValid}
             >
             Add activity
@@ -112,4 +118,4 @@ function AddActivity(props) {
     )
 };
 
-export default withAuthentication(withFirebase(AddActivity));
+export default withFirebase(AddActivity);

@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import CalendarBody from './calendar-body';
 import CalendarHead from './calendar-head';
 import AddActivity from '../AddActivity';
+import ActivityList from '../ActivityList';
 
 function Calendar(props) {
 
@@ -95,6 +96,9 @@ function Calendar(props) {
             <Grid item xs={12}>
                 <Paper className="paper">
                 <h2>Activities for {selectedDay.day}-{selectedDay.month + 1}</h2>
+                <ActivityList
+                    authUser={props.authUser}
+                />
                 </Paper>
             </Grid>
 

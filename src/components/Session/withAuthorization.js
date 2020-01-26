@@ -8,7 +8,7 @@ const withAuthorization = condition => Component => {
         this.props.firebase.auth.onAuthStateChanged(
             authUser => {
                 if (!condition(authUser)) {
-                    alert('not authorized');
+                    console.log('not authorized');
                 }
             }
         )
