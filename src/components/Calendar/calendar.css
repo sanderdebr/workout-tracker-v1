@@ -61,3 +61,11 @@
     overflow: 'auto';
     flex-direction: 'column'
 }
+
+svg.MuiSvgIcon-root {
+    transition: 250ms ease;
+}
+svg.MuiSvgIcon-root:hover {
+    cursor: pointer;
+    opacity: .5;
+}

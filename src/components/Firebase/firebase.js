@@ -34,16 +34,14 @@ class Firebase {
     users = () => this.db.ref('users');
 
     /*** ACTIVITY API ***/
-    activity = (uid, activity, action) => {
+    addActivity = (uid, activity) => {
         const ref = this.db.ref().child(`users/${uid}/activities`);
+        ref.push(activity);
+    }
 
-        if (action === 'add') {
-
-        }
-        if (action === 'update') {
-            ref.push(activity)
-        }
-        if (action === 'getRef') return ref;
+    updateActivity = (uid, activity, activityKey) => {
+        const ref = this.db.ref().child(`users/${uid}/activities/${activityKey}`);
+        ref.update(activity);
     }
     // addActivity = (uid, activity) => this.db.ref().child(`users/${uid}`).set({ activity });
 

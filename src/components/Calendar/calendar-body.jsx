@@ -33,7 +33,7 @@ const CalendarBody = props => {
         daysInMonth.push(
             <TableCell 
                 key={d} 
-                className={"week-day" + " " + currentDay + " " + selectedDay}
+                className={`week-day ${currentDay} ${selectedDay}`}
                 onClick={() => props.setSelectedDay(d)}
             >{d}</TableCell>
         );

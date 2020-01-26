@@ -20,46 +20,42 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function AddActivity(props) {
+function EditActivity(props) {
     const classes = useStyles();
 
-    const {authUser, firebase, selectedDay} = props;
+    const {authUser, firebase, activity, activityKey, setEditing} = props;
     const uid = authUser.uid;
-
-    // Set query date for updating database
-    selectedDay.year = new Date().getFullYear();
-    let queryDate = `${selectedDay.day}-${selectedDay.month}-${selectedDay.year}`;
 
     // Set default activity object
     const defaultActivity = {
-        name: '',
-        type: 1,
-        duration: 60,
-        date: queryDate
+        name: activity.name,
+        type: activity.type,
+        duration: activity.duration,
+        date: activity.date
     }
 
-    const [activity, setActivity] = useState(defaultActivity);
+    const [newActivity, setNewActivity] = useState(defaultActivity);
 
     const handleChange = e => {
         const { name, value } = e.target
-        setActivity({
-            ...activity, 
-            date: queryDate,
+        setNewActivity({
+            ...newActivity, 
             [name]: value});
     }
 
     const handleSlider = e => {
         const duration = e.target.getAttribute('aria-valuenow');
-        setActivity({...activity, duration: duration});
+        setNewActivity({...newActivity, duration: duration});
     }
 
-    const isValid = activity.name === '';
+    const isValid = newActivity.name === '';
 
     // Add the activity to firebase via the API made in this app
     const handleSubmit = action => {
         if (authUser) {
-            firebase.addActivity(uid, activity)
-        }
+            firebase.updateActivity(uid, newActivity, activityKey)
+        };
+        setEditing(false);
     }
 
     return (
@@ -71,6 +67,7 @@ function AddActivity(props) {
                     margin="normal"
                     required
                     fullWidth
+                    value={newActivity.name}
                     label="Activity name"
                     name="name"
                     onChange={handleChange}
@@ -82,7 +79,7 @@ function AddActivity(props) {
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={activity.type}
+                        value={newActivity.type}
                         style={{minWidth: '100%'}}
                         name="type"
                         onChange={handleChange}
@@ -96,7 +93,7 @@ function AddActivity(props) {
                     Duration
                 </Typography>
                 <Slider
-                    defaultValue={activity.duration}
+                    defaultValue={newActivity.duration}
                     aria-labelledby="discrete-slider"
                     valueLabelDisplay="auto"
                     step={10}
@@ -116,10 +113,10 @@ function AddActivity(props) {
                 onClick={() => handleSubmit('add')}
                 disabled={isValid}
             >
-            Add activity
+            Save activity
             </Button>
         </form>
     )
 };
 
-export default withFirebase(AddActivity);
+export default withFirebase(EditActivity);

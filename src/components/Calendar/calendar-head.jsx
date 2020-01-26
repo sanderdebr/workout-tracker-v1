@@ -13,7 +13,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 const CalendarHead = props => {
 
     if (props.months.length === 0) {
-        props.allMonths.map(month => {
+        props.allMonths.map(month => (
             props.months.push(
                 <TableCell 
                     colSpan="2"
@@ -25,14 +25,14 @@ const CalendarHead = props => {
                     <span>{month}</span>
                 </TableCell>
             )
-        });
+        ));
     } 
 
     let rows = [];
     let cells = [];
 
     props.months.forEach((row, i) => {
-        if (i % 3 !== 0 || i == 0) {
+        if (i % 3 !== 0 || i === 0) {
             cells.push(row);
         } else {
             rows.push(cells);

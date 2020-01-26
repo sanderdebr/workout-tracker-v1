@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 
 import CalendarBody from './calendar-body';
 import CalendarHead from './calendar-head';
+import EditActivity from '../EditActivity';
 import AddActivity from '../AddActivity';
 import ActivityList from '../ActivityList';
 
@@ -21,7 +22,6 @@ function Calendar(props) {
     };
 
     const [dateObject, setdateObject] = useState(moment());
-    const [allMonths, setAllMonths] = useState(moment.months());
     const [showMonthTable, setShowMonthTable] = useState(false);
     const [selectedDay, setSelected] = useState(defaultSelectedDay);
     const [months, setMonths] = useState([]);
@@ -32,6 +32,7 @@ function Calendar(props) {
     const currentYear = () => dateObject.format("YYYY");
     const currentMonthNum = () => dateObject.month();
     const actualMonth = () => moment().format("MMMM");
+    const allMonths = moment.months();
 
     const toggleMonthSelect = () => {
         setShowMonthTable(!showMonthTable);
@@ -64,11 +65,6 @@ function Calendar(props) {
     const [loading, setLoading] = useState(true);
     const [activities, setActivities] = useState([]);
 
-    // Retrieve firebase data every time selectedDay changes
-    useEffect(() => {
-        retrieveData();
-    }, [selectedDay])
-
     // Retrieve data from firebase
     const retrieveData = () => {
         const {firebase, authUser} = props;
@@ -76,11 +72,27 @@ function Calendar(props) {
         let queryDate = `${selectedDay.day}-${selectedDay.month}-${selectedDay.year}`;
 
         let ref = firebase.db.ref().child(`users/${authUser.uid}/activities`);
-        const listener = ref.orderByChild("date").equalTo(queryDate).on("value", snapshot => {
+        ref.orderByChild("date").equalTo(queryDate).on("value", snapshot => {
             let data = snapshot.val();
             setActivities(data);
             setLoading(false);
         });
+    };
+
+    // Retrieve firebase data every time selectedDay changes
+    useEffect(() => {
+        retrieveData();
+    }, [selectedDay])
+
+    // Edit activity
+    const [editing, setEditing] = useState(false);
+    const [activity, setActivity] = useState(null);
+    const [activityKey, setActivityKey] = useState(null);
+
+    const editActivity = (activity, i) => {
+        setActivityKey(Object.keys(activities)[i]);
+        setEditing(true);
+        setActivity(activity);
     }
 
     return (
@@ -110,11 +122,27 @@ function Calendar(props) {
 
             <Grid item xs={12} md={4} lg={3}>
                 <Paper className="paper">
-                    <h3>Add activity on {selectedDay.day}-{selectedDay.month + 1} </h3>
-                    <AddActivity 
-                        selectedDay={selectedDay} 
-                        authUser={props.authUser}
-                    />
+                    { editing
+                        ?
+                            <>
+                                <h3>Edit activity on {selectedDay.day}-{selectedDay.month + 1} </h3>
+                                <EditActivity 
+                                    activity={activity}
+                                    activityKey={activityKey}
+                                    selectedDay={selectedDay} 
+                                    authUser={props.authUser}
+                                    setEditing={setEditing}
+                                />
+                            </>
+                        :
+                            <>
+                                <h3>Add activity on {selectedDay.day}-{selectedDay.month + 1} </h3>
+                                <AddActivity 
+                                    selectedDay={selectedDay} 
+                                    authUser={props.authUser}
+                                />
+                            </>
+                    }
                 </Paper>
             </Grid>
 
@@ -124,6 +152,8 @@ function Calendar(props) {
                 <ActivityList
                     loading={loading}
                     activities={activities}
+                    authUser={props.authUser}
+                    editActivity={editActivity}
                 />
                 </Paper>
             </Grid>
