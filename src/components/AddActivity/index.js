@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 function AddActivity(props) {
     const classes = useStyles();
 
-    const {authUser, firebase, selectedDay} = props;
+    const {authUser, firebase, selectedDay, setOpenAlert, setSnackbarMsg} = props;
     const uid = authUser.uid;
 
     // Set query date for updating database
@@ -58,7 +58,14 @@ function AddActivity(props) {
     // Add the activity to firebase via the API made in this app
     const handleSubmit = action => {
         if (authUser) {
-            firebase.addActivity(uid, activity)
+            firebase.addActivity(uid, activity);
+            setActivity(defaultActivity);
+            // Show notification
+            setOpenAlert(true);
+            setSnackbarMsg('Added activity');
+            setTimeout(() => {
+                setOpenAlert(false)
+            }, 3000)
         }
     }
 
@@ -72,6 +79,7 @@ function AddActivity(props) {
                     required
                     fullWidth
                     label="Activity name"
+                    value={activity.name}
                     name="name"
                     onChange={handleChange}
                 />

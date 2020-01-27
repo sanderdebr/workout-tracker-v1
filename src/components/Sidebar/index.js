@@ -51,14 +51,6 @@ function Sidebar(props) {
             <List>
                 <div>
                     <ListSubheader inset>Account</ListSubheader>
-                    <Link to={`${match.url}/settings`}>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <SettingsIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Settings" />
-                        </ListItem>
-                    </Link>
                     <Link to={`${match.url}/admin`}>
                         <ListItem button>
                             <ListItemIcon>

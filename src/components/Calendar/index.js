@@ -7,6 +7,7 @@ import 'moment/locale/nl';
 
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import CalendarBody from './calendar-body';
 import CalendarHead from './calendar-head';
@@ -15,6 +16,8 @@ import AddActivity from '../AddActivity';
 import ActivityList from '../ActivityList';
 
 function Calendar(props) {
+
+    const {firebase, authUser} = props;
 
     let defaultSelectedDay = {
         day: moment().format("D"),
@@ -44,7 +47,7 @@ function Calendar(props) {
         dateObject2 = moment(dateObject).set("month", monthNo);
         setdateObject(dateObject2);
         setMonths([]);
-        toggleMonthSelect();
+        setShowMonthTable(false);
     }
 
     const firstDayOfMonth = () => {
@@ -67,7 +70,6 @@ function Calendar(props) {
 
     // Retrieve data from firebase
     const retrieveData = () => {
-        const {firebase, authUser} = props;
         
         let queryDate = `${selectedDay.day}-${selectedDay.month}-${selectedDay.year}`;
 
@@ -76,8 +78,25 @@ function Calendar(props) {
             let data = snapshot.val();
             setActivities(data);
             setLoading(false);
+            setEditing(false);
         });
+
+        // Update active days
+        retrieveActiveDays();
     };
+
+    // Get array of days with activities
+    const [activeDays, setActiveDays] = useState([]);
+
+    const retrieveActiveDays = () => {
+        let ref = firebase.db.ref().child(`users/${authUser.uid}/activities`);
+        ref.on("value", snapshot => {
+            let data = snapshot.val();
+            // Set all active days in array
+            const arr = Object.values(data).map(obj => obj.date.slice(0,4));
+            setActiveDays(arr);
+        });
+    }
 
     // Retrieve firebase data every time selectedDay changes
     useEffect(() => {
@@ -88,6 +107,8 @@ function Calendar(props) {
     const [editing, setEditing] = useState(false);
     const [activity, setActivity] = useState(null);
     const [activityKey, setActivityKey] = useState(null);
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [snackbarMsg, setSnackbarMsg] = React.useState(null);
 
     const editActivity = (activity, i) => {
         setActivityKey(Object.keys(activities)[i]);
@@ -117,6 +138,7 @@ function Calendar(props) {
                         setSelectedDay={setSelectedDay}
                         selectedDay={selectedDay}
                         weekdays={moment.weekdays()} 
+                        activeDays={activeDays}
                     />
             </Grid>
 
@@ -132,6 +154,8 @@ function Calendar(props) {
                                     selectedDay={selectedDay} 
                                     authUser={props.authUser}
                                     setEditing={setEditing}
+                                    setOpenAlert={setOpenAlert}
+                                    setSnackbarMsg={setSnackbarMsg}
                                 />
                             </>
                         :
@@ -140,6 +164,8 @@ function Calendar(props) {
                                 <AddActivity 
                                     selectedDay={selectedDay} 
                                     authUser={props.authUser}
+                                    setOpenAlert={setOpenAlert}
+                                    setSnackbarMsg={setSnackbarMsg}
                                 />
                             </>
                     }
@@ -154,10 +180,20 @@ function Calendar(props) {
                     activities={activities}
                     authUser={props.authUser}
                     editActivity={editActivity}
+                    setOpenAlert={setOpenAlert}
+                    setSnackbarMsg={setSnackbarMsg}
+                    setEditing={setEditing}
                 />
                 </Paper>
             </Grid>
-
+            <Snackbar 
+                anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+                }}
+                open={openAlert} 
+                message={snackbarMsg}
+            />
         </Grid>
     )
 };

@@ -13,7 +13,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
 function ActivityList(props) {
-    const {loading, activities, editActivity} = props;
+    const {loading, activities, editActivity,setOpenAlert, setSnackbarMsg, setEditing} = props;
 
     const deleteActivity = (i) => {
         // Get key of activity in firebase
@@ -27,6 +27,16 @@ function ActivityList(props) {
        };
 
        props.firebase.updateActivity(props.authUser.uid, emptyActivity, activityKey);
+
+       // Show notification
+       setOpenAlert(true);
+       setSnackbarMsg('Deleted activity');
+       setTimeout(() => {
+            setOpenAlert(false)
+       }, 3000)
+
+       // stop editing
+       setEditing(false);
     }
 
     return (
@@ -69,7 +79,7 @@ function ActivityList(props) {
                                             type = "Not set";
                                     }
                                     return (
-                                        <TableRow>
+                                        <TableRow key={i}>
                                             <TableCell>{name}</TableCell>
                                             <TableCell>{type}</TableCell>
                                             <TableCell>{duration}</TableCell>

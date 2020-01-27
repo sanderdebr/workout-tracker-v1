@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 function EditActivity(props) {
     const classes = useStyles();
 
-    const {authUser, firebase, activity, activityKey, setEditing} = props;
+    const {authUser, firebase, activity, activityKey, setEditing, setOpenAlert, setSnackbarMsg} = props;
     const uid = authUser.uid;
 
     // Set default activity object
@@ -53,9 +53,15 @@ function EditActivity(props) {
     // Add the activity to firebase via the API made in this app
     const handleSubmit = action => {
         if (authUser) {
-            firebase.updateActivity(uid, newActivity, activityKey)
+            firebase.updateActivity(uid, newActivity, activityKey);
+            setEditing(false);
+            // Show alert and hide after 3sec
+            setOpenAlert(true);
+            setSnackbarMsg('Updated activity');
+            setTimeout(() => {
+                setOpenAlert(false)
+            }, 3000)
         };
-        setEditing(false);
     }
 
     return (
@@ -93,7 +99,7 @@ function EditActivity(props) {
                     Duration
                 </Typography>
                 <Slider
-                    defaultValue={newActivity.duration}
+                    defaultValue={parseInt(newActivity.duration)}
                     aria-labelledby="discrete-slider"
                     valueLabelDisplay="auto"
                     step={10}

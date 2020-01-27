@@ -67,4 +67,6 @@ const UserList = ({ users }) => (
   </ul>
 );
 
-export default withAuthorization(withFirebase(AdminPage));
+const condition = authUser => authUser.email === 'sander606@gmail.com';
+
+export default withFirebase(withAuthorization(condition)(AdminPage));

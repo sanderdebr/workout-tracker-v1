@@ -22,7 +22,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import Calendar from '../components/Calendar';
-import Settings from './Settings';
 import AdminPage from './AdminPage';
 import useStyles from '../config/theme-dashboard';
 import Sidebar from '../components/Sidebar';
@@ -78,7 +77,7 @@ function Dashboard(props) {
 
               <Sidebar signOut={signOut} open={open} handleDrawerClose={handleDrawerClose} />
 
-              <main className={classes.content && classes.appBarShift}>
+              <main className={classes.content, !open ? classes.contentClosed : classes.appBarShift }>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="xl" className={classes.container}>
 
@@ -86,9 +85,6 @@ function Dashboard(props) {
                       <Route exact path={`${match.url}/`}>
                         <Calendar authUser={authUser} />
                       </Route> 
-                      <Route path={`${match.url}/settings`}>
-                        <Settings />
-                      </Route>
                       <Route path={`${match.url}/admin`}>
                         <AdminPage />
                       </Route>
