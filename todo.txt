@@ -1,0 +1,10 @@
+2. add forgot password
+3. changing months directly
+4. Add notification after editing
+5. Stop editing when deleted
+6. Add settings, change name/email?
+7. Add admin rights
+8. Mobile support
+9. Fix right top toolbar
+10. Add highlight on active days
+11. Add graph on workouts page

@@ -6,8 +6,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -17,6 +15,8 @@ import Icon from '@material-ui/core/Icon';
 import appConfig from '../config/app-config';
 import useStyles from '../config/theme-signinup';
 import Copyright from '../components/Copyright';
+
+import PasswordForget from '../components/PasswordForget';
 
 function SignIn(props) {
   const classes = useStyles();
@@ -83,10 +83,6 @@ function SignIn(props) {
               autoComplete="current-password"
               onChange={handleChange}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Typography className={classes.error}>
               {user.error ? user.error : ''}
             </Typography>
@@ -103,9 +99,7 @@ function SignIn(props) {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link to="/">
-                  Forgot password?
-                </Link>
+                <PasswordForget />
               </Grid>
               <Grid item>
                 <Link to="/sign-up">

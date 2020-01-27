@@ -75,7 +75,7 @@ const CalendarHead = props => {
                         </TableRow> 
                         { monthList }
                     </TableBody>
-                : '' }
+                : null }
             </Table>
         </TableContainer>
     )

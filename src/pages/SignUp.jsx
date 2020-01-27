@@ -105,10 +105,6 @@ function SignUp(props) {
               value={user.password}
               onChange={handleChange}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Typography className={classes.error}>
               {user.error ? user.error : ''}
             </Typography>

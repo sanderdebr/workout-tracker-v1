@@ -80,7 +80,7 @@ function Dashboard(props) {
 
               <main className={classes.content && classes.appBarShift}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="xl" root className={classes.container}>
+                <Container maxWidth="xl" className={classes.container}>
 
                     <Switch>
                       <Route exact path={`${match.url}/`}>

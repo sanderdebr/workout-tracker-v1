@@ -1,5 +1,6 @@
 import React from 'react';
 import './calendar.css';
+import nextId from "react-id-generator";
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -14,7 +15,7 @@ const CalendarBody = props => {
     let blanks = [];
     for (let i = 0; i < props.firstDayOfMonth(); i++) {
         blanks.push(
-            <TableCell>{""}</TableCell>
+            <TableCell key={nextId()}>{""}</TableCell>
         )
     }
 
@@ -62,8 +63,8 @@ const CalendarBody = props => {
                 <TableHead>
                     <TableRow>
                         {
-                            props.weekdays.map(day => (
-                                <TableCell key={day}>
+                            props.weekdays.map((day, i) => (
+                                <TableCell key={i}>
                                     {day}
                                 </TableCell>
                             ))
