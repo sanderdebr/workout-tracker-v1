@@ -1,2 +1,1 @@
-1. Active days month support
-2. Add graph on workouts page
+1. Add graph on workouts page

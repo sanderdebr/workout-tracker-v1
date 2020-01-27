@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { withFirebase } from '../Firebase';
 import moment from 'moment';
+import Chart from '../Chart';
+
 import './calendar.css';
 import 'moment/locale/en-gb';
 import 'moment/locale/nl';
@@ -14,6 +16,7 @@ import CalendarHead from './calendar-head';
 import EditActivity from '../EditActivity';
 import AddActivity from '../AddActivity';
 import ActivityList from '../ActivityList';
+
 
 function Calendar(props) {
 
@@ -172,9 +175,9 @@ function Calendar(props) {
                 </Paper>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} md={7}>
                 <Paper className="paper">
-                <h2>Activities for {selectedDay.day}-{selectedDay.month + 1}</h2>
+                <h3>Activities on {selectedDay.day}-{selectedDay.month + 1}</h3>
                 <ActivityList
                     loading={loading}
                     activities={activities}
@@ -186,6 +189,15 @@ function Calendar(props) {
                 />
                 </Paper>
             </Grid>
+
+            <Grid item xs={12} md={5}>
+                <Paper className="paper">
+                    <h3>Statistics this month</h3>
+                    <Chart />
+                </Paper>
+            </Grid>
+
+
             <Snackbar 
                 anchorOrigin={{
                 vertical: 'bottom',
