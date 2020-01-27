@@ -91,13 +91,23 @@ function Calendar(props) {
     // Get array of days with activities
     const [activeDays, setActiveDays] = useState([]);
 
+    // Also store them for in the chart
+    let defaultChartData = {
+        activeDays: []
+    }
+    const [chartData, setChartData] = useState(defaultChartData);
+
     const retrieveActiveDays = () => {
         let ref = firebase.db.ref().child(`users/${authUser.uid}/activities`);
         ref.on("value", snapshot => {
             let data = snapshot.val();
-            // Set all active days in array
-            const arr = Object.values(data).map(obj => obj.date.slice(0,4));
+            const values = Object.values(data);
+            // Store all active day/month combinations in array for calendar
+            const arr = values.map(obj => obj.date.slice(0,4));
             setActiveDays(arr);
+            // Store all active days in array for chart
+            const chartArr = values.map(obj => parseInt(obj.date.slice(0,2)));
+            setChartData({...chartData, activeDays: chartArr });
         });
     }
 
@@ -192,8 +202,12 @@ function Calendar(props) {
 
             <Grid item xs={12} md={5}>
                 <Paper className="paper">
-                    <h3>Statistics this month</h3>
-                    <Chart />
+                    <h3>Statistics for {currentMonth()}</h3>
+                    <Chart 
+                        month={currentMonthNum()}
+                        daysInMonth={daysInMonth()}
+                        chartData={chartData}
+                    />
                 </Paper>
             </Grid>
 
