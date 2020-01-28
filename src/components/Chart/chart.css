@@ -1,0 +1,18 @@
+.chart text {
+    font-family: Arial;
+    font-size: 12px;
+}
+
+.chart path { 
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.chart .axis path,
+.chart .axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
